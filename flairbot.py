@@ -12,7 +12,7 @@ reddit = praw.Reddit(username=config.username, password=config.password, client_
 # Check logged posts, if post is flaired unlog, if post is >10min old remove and unlog
 
 # Constants
-SUBREDDIT = "negativezero"      # sub without /r/
+SUBREDDIT = config.subreddit    # sub without /r/
 MAX_TIME = 600                  # time for removal in seconds
 PM_TIME = 60                    # time for manual flairing before PM
 LOG_FILENAME = "log.json"       # filename of file for keeping track of work
