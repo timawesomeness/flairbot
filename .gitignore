@@ -102,3 +102,6 @@ ENV/
 
 # log file
 log.json
+
+# config
+config.py
