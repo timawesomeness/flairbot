@@ -95,27 +95,22 @@ def check_new_messages():
         message.mark_read()
 
 def check_logged_posts():
-    for post_id in list(log): # iterate through the log, check if posts are still valid
-        post = [_ for _ in reddit.info([post_id])]
-        if len(post) == 0:
-            print("Post somehow doesn't exist on reddit?")
-            remove_item(post_id)
-            continue
-        post = post[0]
-        if (not post) or (post.author is None): # if the post is deleted or somehow doesn't exist
-            remove_item(post_id)
-        elif post.link_flair_text: # if the post is flaired
-            remove_item(post_id)
-        elif time.time() - post.created_utc > MAX_TIME: # if the post is too old
-            try:
-                post.mod.remove() # remove post from sub
-            except prawcore.exceptions.Forbidden as e:
-                print("we don't have permission to remove here. not a mod?")
-            except (praw.exceptions.PRAWException, prawcore.PrawcoreException) as e:
-                raise e
-            else:
-                post.author.message("Your post has been removed as you did not flair it in time.", f"[Your recent post]({post.shortlink}) was not flaired in the given time and has been removed. It will not be approved, please resubmit your post and remember to flair it once it is posted.")
-            remove_item(post_id)
+    if len(log) > 0:
+        for post in reddit.info(list(log)): # iterate through the log, check if posts are still valid
+            if (not post) or (post.author is None): # if the post is deleted or somehow doesn't exist
+                remove_item(post.name)
+            elif post.link_flair_text: # if the post is flaired
+                remove_item(post.name)
+            elif time.time() - post.created_utc > MAX_TIME: # if the post is too old
+                try:
+                    post.mod.remove() # remove post from sub
+                except prawcore.exceptions.Forbidden as e:
+                    print("we don't have permission to remove here. not a mod?")
+                except (praw.exceptions.PRAWException, prawcore.PrawcoreException) as e:
+                    raise e
+                else:
+                    post.author.message("Your post has been removed as you did not flair it in time.", f"[Your recent post]({post.shortlink}) was not flaired in the given time and has been removed. It will not be approved, please resubmit your post and remember to flair it once it is posted.")
+                remove_item(post.name)
 
 if __name__ == "__main__":
     try:
