@@ -123,7 +123,6 @@ if __name__ == "__main__":
     except:
         pass # log probably doesn't exist yet
     while True:
-        print(log)
         try:
             check_new_posts()
         except (praw.exceptions.PRAWException, prawcore.PrawcoreException) as e:
