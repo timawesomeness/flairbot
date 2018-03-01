@@ -137,5 +137,5 @@ if __name__ == "__main__":
         except (praw.exceptions.PRAWException, prawcore.PrawcoreException) as e:
             print(f"Error connecting to reddit: {str(e)}")
             time.sleep(5)
-        time.sleep(15)
+        time.sleep(5)
 
