@@ -78,12 +78,8 @@ def check_new_messages():
                 if flair:
                     flair = flair[0]
                     try:
-                        post = [_ for _ in reddit.info([post_id])]
-                        if len(post) == 0:
-                            print("Post somehow doesn't exist on reddit?")
-                            remove_item(post_id)
-                            continue
-                        post[0].mod.flair(text=flair.title(), css_class=CSS_CLASSES[flair.lower()]) # flair the post - assuming flairs should be title case
+                        post = reddit.submission(id=post_id[3:]) 
+                        post.mod.flair(text=flair.title(), css_class=CSS_CLASSES[flair.lower()]) # flair the post - assuming flairs should be title case
                     except prawcore.exceptions.Forbidden as e:
                         print("we don't have permission to flair here. not a mod?")
                     except (praw.exceptions.PRAWException, prawcore.PrawcoreException) as e:
